@@ -77,11 +77,12 @@ http.createServer(function (req, res) {
       });
     } else {
       var pathname = url.parse(req.url, true).pathname;
+      console.log(pathname);
       switch(pathname/*.substr(pathname.length-4,4)*/)
       {
-        case "favicon.ico":
+        case "/favicon.ico":
           res.writeHead(200, {'Content-Type': 'image/x-icon; charset=utf-8'});
-          fs.createReadStream('./'+pathname).pipe(res)
+          fs.createReadStream('.'+pathname).pipe(res)
           break;
         case "/":
           res.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'});

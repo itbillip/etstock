@@ -1,6 +1,6 @@
 <html>
 <head>
-    <title></title>
+    <title>經濟通</title>
     <!-- link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" -->
     <link rel="stylesheet" href="https://bootswatch.com/4/slate/bootstrap.min.css" crossorigin="anonymous" />
     <style>
@@ -20,6 +20,7 @@
         <div class="collapse navbar-collapse" id="navbarColor02">
             <ul class="navbar-nav mr-auto"></ul>
             <form class="form-inline my-2 my-lg-0">
+                <button class="btn btn-secondary my-2 my-sm-0" type="submit" id="modify">*</button>
                 <button class="btn btn-secondary my-2 my-sm-0" type="submit" id="remove">-</button>
                 <button class="btn btn-secondary my-2 my-sm-0" type="submit" id="add">+</button>
             </form>
@@ -43,12 +44,15 @@
                     $('#add').trigger('click');
                 } else if (keycode==45) {
                     $('#remove').trigger('click');
+                } else if (keycode==42) {
+                    $('#modify').trigger('click');
                 }
             });
             $('#add').click(function () {
                 var quote = Cookies.get('quote') || '';
                 var enter = prompt(quote+'\n輸入股票代號:', '') + ';';
-                if (enter==';') return;
+                console.log(enter);
+                if (enter==';' || enter=='null;') return;
                 quote += enter;
                 Cookies.set('quote', quote, {expires : 99999});
                 location.reload();
@@ -58,7 +62,11 @@
                 var enter = prompt(quote+'\n輸入股票代號:', '') + ';';
                 if (enter==';') return;
                 quote = quote.replace(enter,'');
-                //Cookies.remove('quote');
+                Cookies.set('quote', quote, {expires : 99999});
+                location.reload();
+            });
+            $('#modify').click(function () {
+                var quote = prompt('修改股票代號:', Cookies.get('quote') || '');
                 Cookies.set('quote', quote, {expires : 99999});
                 location.reload();
             });
