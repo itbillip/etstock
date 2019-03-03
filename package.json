@@ -1,0 +1,27 @@
+{
+  "name": "etstock",
+  "version": "1.0.0",
+  "description": "Tabulated ETNet stocks",
+  "main": "etstock.js",
+  "dependencies": {
+    "htmlparser2": "^3.10.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "node etstock.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/itbillip/etstock.git"
+  },
+  "keywords": [
+    "ETStock",
+    "ETNet"
+  ],
+  "author": "Bill",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/itbillip/etstock/issues"
+  },
+  "homepage": "https://github.com/itbillip/etstock#readme"
+}
