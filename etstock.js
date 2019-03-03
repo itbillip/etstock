@@ -77,7 +77,6 @@ http.createServer(function (req, res) {
       });
     } else {
       var pathname = url.parse(req.url, true).pathname;
-      console.log(pathname);
       switch(pathname/*.substr(pathname.length-4,4)*/)
       {
         case "/favicon.ico":

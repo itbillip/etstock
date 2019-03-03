@@ -67,6 +67,7 @@
             });
             $('#modify').click(function () {
                 var quote = prompt('修改股票代號:', Cookies.get('quote') || '');
+                if (quote==null) return;
                 Cookies.set('quote', quote, {expires : 99999});
                 location.reload();
             });
