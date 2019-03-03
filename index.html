@@ -3,19 +3,17 @@
     <title></title>
     <!-- link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" -->
     <link rel="stylesheet" href="https://bootswatch.com/4/slate/bootstrap.min.css" crossorigin="anonymous" />
-    <style></style>
+    <style>
+        div.table { display: table; }
+        div.tr { display: table-row; }
+        div.td { display: table-cell; }
+    </style>
 </head>
 <body>
+    <div class='container'></div>
     <nav class="navbar navbar-expand-lg sticky-top navbar-dark bg-dark">
         <!-- <a class="navbar-brand" href="#">經濟通</a> -->
-        <div class="row" id="indexbar">
-            <!-- <div class="col-sm-auto">恒指<span class="text-success">28,630</span><span class="text-success">+116(+0.41%)</span></div>
-            <div class="col-sm-auto">期指<span class="text-danger">28,636-19</span><span class="text-danger">(-0.07%)</span></div>
-            <div class="col-sm-auto">上證<span class="text-danger">2,752-9</span><span class="text-danger">(-0.34%)</span></div>
-            <div class="col-sm-auto">大市成交 1,150億</div>
-            <div class="col-sm-auto">高水6</div>
-            <div class="col-sm-auto">成交 2,530億</div> -->
-        </div>
+        <div class="row" id="indexbar"></div>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -28,92 +26,9 @@
         </div>
     </nav>
     <table id="quote_table" class="table table-hover">
-        <thead>
-            <!-- <tr>
-                <th class="text-nowrap text-center" style="padding: 3px">代號</th>
-                <th class="text-nowrap text-center" style="padding: 3px">股名</th>
-                <th class="text-nowrap text-center" style="padding: 3px">現價</th>
-                <th class="text-nowrap text-center" style="padding: 3px">變動</th>
-                <th class="text-nowrap text-center" style="padding: 3px">買入</th>
-                <th class="text-nowrap text-center" style="padding: 3px">賣出</th>
-                <th class="text-nowrap text-center" style="padding: 3px">主動買</th>
-                <th class="text-nowrap text-center" style="padding: 3px">主動沽</th>
-                <th class="text-nowrap text-center" style="padding: 3px">最高</th>
-                <th class="text-nowrap text-center" style="padding: 3px">前收市</th>
-                <th class="text-nowrap text-center" style="padding: 3px">最低</th>
-                <th class="text-nowrap text-center" style="padding: 3px">開市</th>
-                <th class="text-nowrap text-center" style="padding: 3px">1個月最高</th>
-                <th class="text-nowrap text-center" style="padding: 3px">成交股數</th>
-                <th class="text-nowrap text-center" style="padding: 3px">1個月最低</th>
-                <th class="text-nowrap text-center" style="padding: 3px">成交金額</th>
-                <th class="text-nowrap text-center" style="padding: 3px">52周高</th>
-                <th class="text-nowrap text-center" style="padding: 3px">沽空金額</th>
-                <th class="text-nowrap text-center" style="padding: 3px">52周低</th>
-                <th class="text-nowrap text-center" style="padding: 3px">10天平均值</th>
-                <th class="text-nowrap text-center" style="padding: 3px">交易宗數</th>
-                <th class="text-nowrap text-center" style="padding: 3px">20天平均值</th>
-                <th class="text-nowrap text-center" style="padding: 3px">每宗成交金額</th>
-                <th class="text-nowrap text-center" style="padding: 3px">50天平均值</th>
-                <th class="text-nowrap text-center" style="padding: 3px">加權平均價</th>
-                <th class="text-nowrap text-center" style="padding: 3px">250天平均值</th>
-                <th class="text-nowrap text-center" style="padding: 3px">交易貨幣/單位</th>
-                <th class="text-nowrap text-center" style="padding: 3px">14天RSI</th>
-                <th class="text-nowrap text-center" style="padding: 3px">買賣差價</th>
-                <th class="text-nowrap text-center" style="padding: 3px">10天回報率</th>
-                <th class="text-nowrap text-center" style="padding: 3px">市盈率/預期</th>
-                <th class="text-nowrap text-center" style="padding: 3px">風險率</th>
-                <th class="text-nowrap text-center" style="padding: 3px">周息率/預期</th>
-                <th class="text-nowrap text-center" style="padding: 3px">回報/風險比率</th>
-                <th class="text-nowrap text-center" style="padding: 3px">每股盈利</th>
-                <th class="text-nowrap text-center" style="padding: 3px">啤打系數</th>
-                <th class="text-nowrap text-center" style="padding: 3px">每股全年派息</th>
-                <th class="text-nowrap text-center" style="padding: 3px">每股帳面淨值</th>
-          </tr> -->
-        </thead>
-        <tbody>
-            <!-- <tr class="text-success">
-                <td id="popoverData" class="text-nowrap text-center" style="padding:3px" data-html="true" data-content="<li>Popover</li>" rel="popover" data-placement1="bottom" data-original-title="" data-trigger="hover">00005</td>
-                <td class="text-nowrap text-center" style="padding:3px">滙豐控股</td>
-                <td class="text-nowrap text-center" style="padding:3px">64.900</td>
-                <td class="text-nowrap text-center" style="padding:3px">+0.488 (+0.758%)</td>
-                <td class="text-nowrap text-center" style="padding:3px">64.850</td>
-                <td class="text-nowrap text-center" style="padding:3px">64.900</td>
-                <td class="text-nowrap text-center" style="padding:3px">60%</td>
-                <td class="text-nowrap text-center" style="padding:3px">40%</td>
-                <td class="text-nowrap text-center" style="padding:3px">65.150</td>
-                <td class="text-nowrap text-center" style="padding:3px">64.412</td>
-                <td class="text-nowrap text-center" style="padding:3px">64.600</td>
-                <td class="text-nowrap text-center" style="padding:3px">64.950</td>
-                <td class="text-nowrap text-center" style="padding:3px">66.362</td>
-                <td class="text-nowrap text-center" style="padding:3px">34.907M</td>
-                <td class="text-nowrap text-center" style="padding:3px">63.162</td>
-                <td class="text-nowrap text-center" style="padding:3px">2.265B</td>
-                <td class="text-nowrap text-center" style="padding:3px">76.122</td>
-                <td class="text-nowrap text-center" style="padding:3px">557.636M</td>
-                <td class="text-nowrap text-center" style="padding:3px">58.712</td>
-                <td class="text-nowrap text-center" style="padding:3px">64.822</td>
-                <td class="text-nowrap text-center" style="padding:3px">8480</td>
-                <td class="text-nowrap text-center" style="padding:3px">64.467</td>
-                <td class="text-nowrap text-center" style="padding:3px">267,112</td>
-                <td class="text-nowrap text-center" style="padding:3px">63.481</td>
-                <td class="text-nowrap text-center" style="padding:3px">64.887</td>
-                <td class="text-nowrap text-center" style="padding:3px">68.162</td>
-                <td class="text-nowrap text-center" style="padding:3px">HKD/400</td>
-                <td class="text-nowrap text-center" style="padding:3px">50.699</td>
-                <td class="text-nowrap text-center" style="padding:3px">0.050/0.050</td>
-                <td class="text-nowrap text-center" style="padding:3px">0.914%</td>
-                <td class="text-nowrap text-center" style="padding:3px">13.124/11.613</td>
-                <td class="text-nowrap text-center" style="padding:3px">4.203%</td>
-                <td class="text-nowrap text-center" style="padding:3px">6.145/6.168</td>
-                <td class="text-nowrap text-center" style="padding:3px">0.218</td>
-                <td class="text-nowrap text-center" style="padding:3px">USD0.630</td>
-                <td class="text-nowrap text-center" style="padding:3px">+0.710</td>
-                <td class="text-nowrap text-center" style="padding:3px">USD0.510</td>
-                <td class="text-nowrap text-center" style="padding:3px">USD9.148</td>
-            </tr> -->
-        </tbody>
+        <thead></thead>
+        <tbody></tbody>
     </table> 
-</div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
@@ -132,9 +47,9 @@
             });
             $('#add').click(function () {
                 var quote = Cookies.get('quote') || '';
-                quote += prompt(quote+'\n輸入股票代號:', '') + ';';
-                quote = quote.replace(';;',';').replace('null;','');
-                if (quote==';') quote='';
+                var enter = prompt(quote+'\n輸入股票代號:', '') + ';';
+                if (enter==';') return;
+                quote += enter;
                 Cookies.set('quote', quote, {expires : 99999});
                 location.reload();
             });
@@ -142,7 +57,7 @@
                 var quote = Cookies.get('quote') || '';
                 var enter = prompt(quote+'\n輸入股票代號:', '') + ';';
                 if (enter==';') return;
-                quote = (Cookies.get('quote') || '').replace(enter,'');
+                quote = quote.replace(enter,'');
                 //Cookies.remove('quote');
                 Cookies.set('quote', quote, {expires : 99999});
                 location.reload();
@@ -163,7 +78,6 @@
                                 var lines = data.split('\n');
                                 if (lines.length<4) return;
                                 var values = [];
-
                                 for (var i=0;i<lines.length;i++) {
                                     values.push(lines[i].split('|'));
                                 }
@@ -200,30 +114,31 @@
 
                                 var stock_no = stock_now[0];
                                 var drop = stock_now[stock_now.length-1].substr(0,1)=='-';
+                                var pop_class = 'text-nowrap bg-primary';
                                 var pop_data = '';
-                                for (var i=0;i<stock_queue.length;i+=2){
+                                for (var i=0;i<stock_queue.length;i+=4){
                                     pop_data += `
-                                        <div class='row'>
-                                            <div class='col-sm-auto'>${stock_queue.slice(i,i+2).join('</div><div class=\'col-sm-auto\'>')}</div>
+                                        <div class='tr'>
+                                            <div class='${pop_class} td'>${stock_queue.slice(i,i+4).join(`</div><div class=\'${pop_class} td\'>`)}</div>
                                         </div>`
                                 }
-                                for (var i=0;i<stock_details.length;i+=2){
+                                for (var i=0;i<stock_details.length;i+=4){
                                     pop_data += `
-                                        <div class='row'>
-                                            <div class='col-sm-auto'>${stock_details.slice(i,i+2).join('</div><div class=\'col-sm-auto\'>')}</div>
+                                        <div class='tr'>
+                                            <div class='${pop_class} td'>${stock_details.slice(i,i+4).join(`</div><div class=\'${pop_class} td\'>`)}</div>
                                         </div>`
                                 }
+
                                 var row_data = `
                                     <tr class="${drop?'text-danger':'text-success'}" id="stock${stock_no}">
-                                        <td id="pop${stock_no}" ${th_style}
+                                        <td ${th_style} data-toggle="pop${stock_no}" rel="popover"
                                             data-html="true" data-content="${pop_data}"
-                                            rel="popover" data-placement="bottom"
                                             data-original-title="" data-trigger="hover">
                                             ${stock_no}
                                         </td>
-                                        <th ${th_style}>${stock_now[1]}</th>
-                                        <th ${th_style}>${stock_now[stock_now.length-2]}</th>
-                                        <th ${th_style}>${stock_now[stock_now.length-1]}</th>
+                                        <td ${th_style}>${stock_now[1]}</td>
+                                        <td ${th_style}>${stock_now[stock_now.length-2]}</td>
+                                        <td ${th_style}>${stock_now[stock_now.length-1]}</td>
                                         <td ${th_style}>${Array.from(quote_table.stock_queue_col,x=>stock_queue[x+1]).join(`</td><td ${th_style}>`)}</td>
                                         <td ${th_style}>${Array.from(quote_table.stock_details_col,x=>stock_details[x+1]).join(`</td><td ${th_style}>`)}</td>
                                     </tr>
@@ -231,12 +146,12 @@
                                 var tbody = $('#quote_table > tbody');
                                 var row=tbody.find(`tr[id=stock${stock_no}]`);
                                 if (row.length>0) {
-                                    $(`#pop${stock_no}`).popover('dispose');
+                                    $(`[data-toggle="pop${stock_no}"`).popover('dispose');
                                     row.replaceWith(row_data);
-                                    $(`#pop${stock_no}`).popover();
+                                    $(`[data-toggle="pop${stock_no}"`).popover();
                                 } else {
                                     tbody.append(row_data);
-                                    $(`#pop${stock_no}`).popover();
+                                    $(`[data-toggle="pop${stock_no}"`).popover();
                                 }
                             });
                         }
