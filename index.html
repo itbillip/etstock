@@ -1,5 +1,6 @@
 <html>
 <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>經濟通</title>
     <!-- link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" -->
     <link rel="stylesheet" href="https://bootswatch.com/4/slate/bootstrap.min.css" crossorigin="anonymous" />
@@ -51,7 +52,6 @@
             $('#add').click(function () {
                 var quote = Cookies.get('quote') || '';
                 var enter = prompt(quote+'\n輸入股票代號:', '') + ';';
-                console.log(enter);
                 if (enter==';' || enter=='null;') return;
                 quote += enter;
                 Cookies.set('quote', quote, {expires : 99999});
@@ -83,7 +83,10 @@
                         var quotes = quote.split(';').slice(0,-1);
                         if (quotes.length > 0) {
                             this.quote_idx = (this.quote_idx+1)%quotes.length;
-                            $.get('?quote='+quotes[this.quote_idx], function(data) {
+                            var quick_quote = '';
+                            var n = Math.ceil(quotes.length/5);
+                            for(var i=1;i<5;i++) quick_quote += quotes[(this.quote_idx+i*n)%quotes.length]+'%7C';
+                            $.get(`?quote=${quotes[this.quote_idx]}&quick_quote=${quick_quote}`, function(data) {
                                 var lines = data.split('\n');
                                 if (lines.length<4) return;
                                 var values = [];
@@ -97,17 +100,22 @@
                                 var make_index = function(b,l,c) {
                                     $('#indexbar').append(`
                                         <div class="col-sm-auto">${indexes[b]}
-                                            ${c>0?`<span class="${indexes[b+c].substr(0,1)=='-'?'text-danger':'text-success'}">`:''}
+                                            ${c>0?`<span class="${indexes[b+c].substr(0,1)=='-'?'text-success':'text-danger'}">`:''}
                                                 ${indexes.slice(b+1,b+l).join('&nbsp;')}
                                             ${c>0?`</span>`:''}
                                         </div>
                                     `);
                                 }
-                                make_index(0,4,2); make_index(5,4,2); make_index(10,4,2); make_index(4,1,-1); make_index(9,1,-1); make_index(14,1,-1);
+                                make_index(0,4,2); make_index(5,5,2); make_index(10,4,2); make_index(4,1,-1); make_index(14,1,-1);
 
                                 var stock_now = values[1].slice(0,-1);
                                 var stock_queue = values[2].slice(0,-1);
                                 var stock_details = values[3].slice(0,-1);
+                                var stock_rsearch = values[4].slice(0,-1);
+                                var stock = stock_now[0].split(/(\s+)/).filter( function(e) { return e.trim().length > 0; } );
+                                var stock_no = stock[0];
+                                var stock_name = stock[1];
+
                                 var th_style = 'class="text-nowrap text-center" style="padding: 3px"';
                                 if (!quote_table.has_header) {
                                     var stock_now_head = ['代號','股名','現價','變動'];
@@ -118,10 +126,15 @@
                                             <th ${th_style}>${Array.from(quote_table.stock_details_col,x=>stock_details[x]).join(`</th><th ${th_style}>`)}</th>
                                         </tr>
                                     `);
+                                    var row_data = '';
+                                    for(var i=0;i<quotes.length;i++){
+                                        var quote = ('0000'+quotes[i]).slice(-5);
+                                        row_data += `<tr class='text-danger' id="stock${quote}"><td ${th_style}>${quote}</td>${`<td ${th_style}></td>`.repeat(3)}</tr>`;
+                                    }
+                                    $('#quote_table > tbody').html(row_data);
                                     quote_table.has_header=true;
                                 }
 
-                                var stock_no = stock_now[0];
                                 var drop = stock_now[stock_now.length-1].substr(0,1)=='-';
                                 var pop_class = 'text-nowrap bg-primary';
                                 var pop_data = '';
@@ -139,13 +152,13 @@
                                 }
 
                                 var row_data = `
-                                    <tr class="${drop?'text-danger':'text-success'}" id="stock${stock_no}">
+                                    <tr class="${drop?'text-success':'text-danger'}" id="stock${stock_no}">
                                         <td ${th_style} data-toggle="pop${stock_no}" rel="popover"
                                             data-html="true" data-content="${pop_data}"
                                             data-original-title="" data-trigger="hover">
                                             ${stock_no}
                                         </td>
-                                        <td ${th_style}>${stock_now[1]}</td>
+                                        <td ${th_style}>${stock_name}</td>
                                         <td ${th_style}>${stock_now[stock_now.length-2]}</td>
                                         <td ${th_style}>${stock_now[stock_now.length-1]}</td>
                                         <td ${th_style}>${Array.from(quote_table.stock_queue_col,x=>stock_queue[x+1]).join(`</td><td ${th_style}>`)}</td>
@@ -153,14 +166,18 @@
                                     </tr>
                                 `;
                                 var tbody = $('#quote_table > tbody');
-                                var row=tbody.find(`tr[id=stock${stock_no}]`);
-                                if (row.length>0) {
-                                    $(`[data-toggle="pop${stock_no}"`).popover('dispose');
-                                    row.replaceWith(row_data);
-                                    $(`[data-toggle="pop${stock_no}"`).popover();
-                                } else {
-                                    tbody.append(row_data);
-                                    $(`[data-toggle="pop${stock_no}"`).popover();
+                                $(`[data-toggle="pop${stock_no}"`).popover('dispose');
+                                tbody.find(`tr[id=stock${stock_no}]`).replaceWith(row_data);
+                                $(`[data-toggle="pop${stock_no}"`).popover();
+
+                                for(var i=1;i<stock_rsearch.length;i+=3) {
+                                    drop = stock_rsearch[i+2].substr(0,1)=='-';
+                                    stock = stock_rsearch[i].split(/(\s+)/).filter( function(e) { return e.trim().length > 0; } );
+                                    tbody.find(`tr[id=stock${stock[0]}]`).attr('class', drop?'text-success':'text-danger');
+                                    $(`#stock${stock[0]} > td:nth-child(1)`).html(stock[0]);
+                                    $(`#stock${stock[0]} > td:nth-child(2)`).html(stock[1]);
+                                    $(`#stock${stock[0]} > td:nth-child(3)`).html(stock_rsearch[i+1]);
+                                    $(`#stock${stock[0]} > td:nth-child(4)`).html(stock_rsearch[i+2]);
                                 }
                             });
                         }

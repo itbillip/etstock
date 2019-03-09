@@ -17,7 +17,8 @@ http.createServer(function (req, res) {
         headers: {
           'User-Agent': 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US)',
           'Referer' : 'http://www.etnet.com.hk/www/tc/stocks/realtime/quote_super.php?code='+q.quote,
-          'Accept-Encoding' : 'gzip, deflate'
+          'Accept-Encoding' : 'gzip, deflate',
+          'Cookie' : 'et_rs_stk='+q.quick_quote
         }
       };
 
@@ -42,22 +43,26 @@ http.createServer(function (req, res) {
         }
 
         var read=0;
-        var parser = new htmlparser.Parser({
+        var text='';
+        var parser = new htmlparser.WritableStream({
           onopentag: function(tagname, attribs) {
             if (read > 0) read++;
             if (read > 0 && tagname == 'table') res.write('\n');
             if (attribs.id == 'indexbar_stock' || attribs.id == 'content') read=1;
-            else if (attribs.id == 'Rsearch') read=0;
+            //else if (attribs.id == 'Rsearch') read=0;
           },
-          ontext: function(text) {
-            if (read > 0) {
-              text = text.trim();
-              if (text!='' && text!='#')
-                res.write(text + '|');
-            }
+          ontext: function(buf) {
+            if (read > 0) text+=buf;
           },
           onclosetag: function(tagname) {
-            if (read > 0 ) read--;
+            if (read > 0) {
+              text=text.trim();
+              if (text!='' && text!='#') {
+                res.write(text+'|');
+              }
+              text='';
+              read--;
+            }
           },
           onend: function() {
             res.end('\n');
@@ -80,7 +85,7 @@ http.createServer(function (req, res) {
       switch(pathname/*.substr(pathname.length-4,4)*/)
       {
         case "/favicon.ico":
-          res.writeHead(200, {'Content-Type': 'image/x-icon; charset=utf-8'});
+          res.writeHead(200, {'Content-Type': 'image/x-icon'});
           fs.createReadStream('.'+pathname).pipe(res)
           break;
         case "/":
