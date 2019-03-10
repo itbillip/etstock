@@ -84,14 +84,18 @@
                         if (quotes.length > 0) {
                             this.quote_idx = (this.quote_idx+1)%quotes.length;
                             var quick_quote = '';
-                            var n = Math.ceil(quotes.length/5);
+                            var n = Math.max(1,Math.round(quotes.length/5));
                             for(var i=1;i<5;i++) quick_quote += quotes[(this.quote_idx+i*n)%quotes.length]+'%7C';
                             $.get(`?quote=${quotes[this.quote_idx]}&quick_quote=${quick_quote}`, function(data) {
                                 var lines = data.split('\n');
                                 if (lines.length<4) return;
                                 var values = [];
                                 for (var i=0;i<lines.length;i++) {
-                                    values.push(lines[i].split('|'));
+                                    var patch=lines[i];
+                                    patch=patch.replace(/#/g,'|');
+                                    patch=patch.replace(/主動買\s/g,'主動買|');
+                                    patch=patch.replace(/主動沽\s/g,'主動沽|');
+                                    values.push(patch.split('|'));
                                 }
 
                                 var indexes = values[0];
@@ -100,7 +104,7 @@
                                 var make_index = function(b,l,c) {
                                     $('#indexbar').append(`
                                         <div class="col-sm-auto">${indexes[b]}
-                                            ${c>0?`<span class="${indexes[b+c].substr(0,1)=='-'?'text-success':'text-danger'}">`:''}
+                                            ${c>0?`<span class="${indexes[b+c].substr(0,1)=='-'?'text-danger':'text-success'}">`:''}
                                                 ${indexes.slice(b+1,b+l).join('&nbsp;')}
                                             ${c>0?`</span>`:''}
                                         </div>
@@ -129,7 +133,11 @@
                                     var row_data = '';
                                     for(var i=0;i<quotes.length;i++){
                                         var quote = ('0000'+quotes[i]).slice(-5);
-                                        row_data += `<tr class='text-danger' id="stock${quote}"><td ${th_style}>${quote}</td>${`<td ${th_style}></td>`.repeat(3)}</tr>`;
+                                        row_data += `
+                                            <tr class='text-success' id="stock${quote}">
+                                                <td ${th_style}>${quote}</td>
+                                                ${`<td ${th_style}>-</td>`.repeat(stock_now_head.length+quote_table.stock_queue_col.length+quote_table.stock_details_col.length-1)}
+                                            </tr>`;
                                     }
                                     $('#quote_table > tbody').html(row_data);
                                     quote_table.has_header=true;
@@ -152,14 +160,14 @@
                                 }
 
                                 var row_data = `
-                                    <tr class="${drop?'text-success':'text-danger'}" id="stock${stock_no}">
+                                    <tr class="${drop?'text-danger':'text-success'}" id="stock${stock_no}">
                                         <td ${th_style} data-toggle="pop${stock_no}" rel="popover"
                                             data-html="true" data-content="${pop_data}"
                                             data-original-title="" data-trigger="hover">
                                             ${stock_no}
                                         </td>
                                         <td ${th_style}>${stock_name}</td>
-                                        <td ${th_style}>${stock_now[stock_now.length-2]}</td>
+                                        <td ${th_style}>${stock_now[stock_now.length-3]}</td>
                                         <td ${th_style}>${stock_now[stock_now.length-1]}</td>
                                         <td ${th_style}>${Array.from(quote_table.stock_queue_col,x=>stock_queue[x+1]).join(`</td><td ${th_style}>`)}</td>
                                         <td ${th_style}>${Array.from(quote_table.stock_details_col,x=>stock_details[x+1]).join(`</td><td ${th_style}>`)}</td>
@@ -173,7 +181,7 @@
                                 for(var i=1;i<stock_rsearch.length;i+=3) {
                                     drop = stock_rsearch[i+2].substr(0,1)=='-';
                                     stock = stock_rsearch[i].split(/(\s+)/).filter( function(e) { return e.trim().length > 0; } );
-                                    tbody.find(`tr[id=stock${stock[0]}]`).attr('class', drop?'text-success':'text-danger');
+                                    tbody.find(`tr[id=stock${stock[0]}]`).attr('class', drop?'text-danger':'text-success');
                                     $(`#stock${stock[0]} > td:nth-child(1)`).html(stock[0]);
                                     $(`#stock${stock[0]} > td:nth-child(2)`).html(stock[1]);
                                     $(`#stock${stock[0]} > td:nth-child(3)`).html(stock_rsearch[i+1]);
