@@ -159,6 +159,7 @@
                                         </div>`
                                 }
 
+                                var annouce = (stock_now[0] != stock_now[stock_now.length-4])?stock_now[stock_now.length-4]:'';
                                 var row_data = `
                                     <tr class="${drop?'text-danger':'text-success'}" id="stock${stock_no}">
                                         <td ${th_style} data-toggle="pop${stock_no}" rel="popover"
@@ -166,7 +167,11 @@
                                             data-original-title="" data-trigger="hover">
                                             ${stock_no}
                                         </td>
-                                        <td ${th_style}>${stock_name}</td>
+                                        <td ${th_style} data-toggle="popa${stock_no}" rel="popover"
+                                            data-html="true" data-content="<span class='text-warning'>${annouce}</span>"
+                                            data-original-title="" data-trigger="hover">
+                                            ${stock_name}
+                                        </td>
                                         <td ${th_style}>${stock_now[stock_now.length-3]}</td>
                                         <td ${th_style}>${stock_now[stock_now.length-1]}</td>
                                         <td ${th_style}>${Array.from(quote_table.stock_queue_col,x=>stock_queue[x+1]).join(`</td><td ${th_style}>`)}</td>
@@ -175,8 +180,10 @@
                                 `;
                                 var tbody = $('#quote_table > tbody');
                                 $(`[data-toggle="pop${stock_no}"`).popover('dispose');
+                                $(`[data-toggle="popa${stock_no}"`).popover('dispose');
                                 tbody.find(`tr[id=stock${stock_no}]`).replaceWith(row_data);
                                 $(`[data-toggle="pop${stock_no}"`).popover();
+                                $(`[data-toggle="popa${stock_no}"`).popover();
 
                                 for(var i=1;i<stock_rsearch.length;i+=3) {
                                     drop = stock_rsearch[i+2].substr(0,1)=='-';

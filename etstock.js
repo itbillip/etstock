@@ -50,6 +50,7 @@ http.createServer(function (req, res) {
               if (read > 0) read++;
               if (read > 0 && tagname == 'table') res.write('\n');
               if (attribs.id == 'indexbar_stock' || attribs.id == 'content') read=1;
+              if (attribs.class == 'announcement') res.write('|');
               //else if (attribs.id == 'Rsearch') read=0;
             },
             ontext: function(buf) {
